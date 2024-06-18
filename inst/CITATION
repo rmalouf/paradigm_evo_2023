@@ -1,11 +1,11 @@
-citHeader("To cite paradigmEvo in publications use:")
+citHeader("To cite paradigmEvo2023 in publications use:")
 
 citEntry(entry = "Manual",
          title = "{paradigmEvo2023}: Models of paradigm evolution via the PCFP.",
          author = personList(as.person(c("Erich R. Round", "Louise Esher", "Sacha Beniamine"))),
-         year = "2023",
+         year = "2024",
          note = "R package version 0.1",
-         URL= "https://github.com/erichround/paradigmEvo",
+         URL= "https://github.com/erichround/paradigm_evo_2023",
          
          textVersion  =
            paste("Round, Erich R., Louise Esher & Sacha Beniamine (2023)",
