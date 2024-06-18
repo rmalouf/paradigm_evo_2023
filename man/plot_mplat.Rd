@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting.R
 \name{plot_mplat}
 \alias{plot_mplat}
-\title{Plot a plat}
+\title{Plot an mplat}
 \usage{
 plot_mplat(
   x,
@@ -30,5 +30,5 @@ colours.}
 A ggplot raster plot.
 }
 \description{
-Plots one trait, and only the first wordform per cell
+Plot an mplat
 }

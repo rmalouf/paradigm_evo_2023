@@ -1,18 +1,18 @@
 Package: paradigmEvo2023
 Type: Package
 Title: Models of paradigm evolution via the PCFP
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
-    c(person('Erich R.', 'Round', email = 'e.round@uq.edu.au', 
+    c(person('Erich R.', 'Round', email = 'e.round@usurrey.ac.uk', 
              role = c('aut', 'cre'), comment = c(ORCID = '0000-0002-7533-8052')),
       person('Louise', 'Esher',
              role = 'ctb', comment = c(ORCID = '0000-0003-4844-3153')),
       person('Sacha', 'Beniamine',
              role = 'ctb', comment = c(ORCID = '0000-0003-2584-3576'))
       )
-Maintainer: <e.round@uq.edu.au>
-Description: Modelling the evolution of morphological paradigms with positive
-    and negative evidence.
+Maintainer: <e.round@surrey.ac.uk>
+Description: Modelling the evolution of morphological paradigms with associative
+    and dissociative evidence.
 Imports:
     dplyr,
     ggplot2,
@@ -31,4 +31,4 @@ Collate:
     'mplat_tools.R'
     'plotting.R'
     'stats.R'
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3

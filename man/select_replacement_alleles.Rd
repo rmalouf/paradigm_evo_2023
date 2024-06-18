@@ -30,15 +30,15 @@ the foci.}
 either for sampling them, or weighting them when all are taken into
 account.}
 
-\item{pivot_use_proportion}{An numeric, giving the propotion of the available
-pivots to use.}
+\item{pivot_use_proportion}{A numeric, giving the proportion of the available
+pivots to use. If set to 0, then just one is used.}
 
 \item{evidence_weighting}{A string, giving the method for weighting evidence
-cells; used either for sampling them, or weighting them when all are taken
+morposites; used either for sampling them, or weighting them when all are taken
 into account.}
 
-\item{evidence_use_proportion}{An numeric, giving the propotion of the
-available evidence cells to use.}
+\item{evidence_use_proportion}{A numeric, giving the proportion of the
+available evidence morposites to use. If set to 0, then just one is used.}
 
 \item{evidence_balance}{A numeric, between 0 and 1, giving the balance of
 negative evidence (max when 0) and positive evidence (max when 1).}

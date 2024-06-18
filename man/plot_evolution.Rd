@@ -8,8 +8,12 @@ plot_evolution(
   evolution,
   which_rep = 1,
   step_method = c("generation", "change"),
-  skip_steps = if (substr(step_method[1], 1, 1) == "g") {    
-    evolution$total_generations/100 } else {     nrow(evolution$change)/100 },
+  skip_steps = if (substr(step_method[1], 1, 1) == "g") {
+    
+    evolution$total_generations/100
+ } else {
+     nrow(evolution$change)/100
+ },
   telic_order = FALSE,
   multicolour = FALSE,
   multicolour_axis = c("columns", "rows"),

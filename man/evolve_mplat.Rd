@@ -12,7 +12,7 @@ evolve_mplat(
   foci_morphosite_selector = c("uniform", "zipf"),
   n_foci = 1,
   pivot_weighting = c("uniform", "zipf", "classwise"),
-  pivot_use_proportion = 1,
+  pivot_use_proportion = 0,
   evidence_weighting = c("uniform", "zipf", "classwise"),
   evidence_use_proportion = 1,
   evidence_balance = 1/(neg_evidence_coeff + 1),
@@ -45,14 +45,14 @@ either for sampling them, or weighting them when all are taken into
 account.}
 
 \item{pivot_use_proportion}{An numeric, giving the proportion of the
-available pivots to use.}
+available pivots to use. If set to 0, then just one pivot is used.}
 
 \item{evidence_weighting}{A string, giving the method for weighting evidence
-cells; used either for sampling them, or weighting them when all are taken
-into account.}
+morphosites; used either for sampling them, or weighting them when all are
+taken into account.}
 
 \item{evidence_use_proportion}{An numeric, giving the proportion of the
-available evidence cells to use.}
+available evidence morphosites to use. If set to 0, just one is used.}
 
 \item{evidence_balance}{A numeric, between 0 and 1, giving the balance of
 negative evidence (max when 0) and positive evidence (max when 1).}
