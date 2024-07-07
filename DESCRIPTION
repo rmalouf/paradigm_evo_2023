@@ -15,8 +15,10 @@ Description: Modelling the evolution of morphological paradigms with associative
     and dissociative evidence.
 Imports:
     dplyr,
+    infotheo,
     ggplot2,
     gganimate,
+    ggpubr,
     matrixStats,
     scales,
     stats,
