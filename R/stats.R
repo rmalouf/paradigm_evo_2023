@@ -220,8 +220,9 @@ get_row_joint_H = function(m) {
     for (j in i:nr) {
       h_mat[i,j] <- h_mat[j,i] <-
         # Entropy in bits
-        entropy(data.frame(r1 = m[i, ], r2 = m[j, ])) / log(2)
-    }
+        # entropy(data.frame(r1 = m[i, ], r2 = m[j, ])) / log(2)
+        fast_entropy(t(m[c(i,j), ])) / log(2)
+      }
   }
   h_mat
 }
@@ -241,8 +242,9 @@ update_row_joint_H = function(h_mat, m, rows) {
     for (j in 1:nr) {
       h_mat[i,j] <- h_mat[j,i] <-
         # Entropy in bits
-        entropy(data.frame(r1 = m[i, ], r2 = m[j, ])) / log(2)
-    }
+        # entropy(data.frame(r1 = m[i, ], r2 = m[j, ])) / log(2)
+        fast_entropy(t(m[c(i,j),])) / log(2)
+        }
   }
   h_mat
 }
@@ -410,3 +412,21 @@ generate_arrangements = function(m, n, p){
   print(blanks)
   solution_list
 }
+
+
+# faster version of entropy (from infotheo) that avoids gratuitous copying
+fast_entropy <- function(X, method = "emp")
+{
+  res <- NULL
+  if (!is.matrix(X))
+    res <- entropy(X)
+  else {
+    n <- NCOL(X)
+    N <- NROW(X)
+    res <- .Call("entropyR", X, N, n, 0, PACKAGE = "infotheo")
+  }
+  res
+}
+
+
+

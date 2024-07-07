@@ -86,7 +86,7 @@ shuffle_within_cols = function(
 #' @param w A vector of weights
 #' @return A list, containing 
 #'   $matrix and $weight
-conflate_and_sum_wt = function(m, w) {
+conflate_and_sum_wt_slow = function(m, w) {
   
   if (!is.matrix(m)) { stop("m must be a matrix.") }
   
@@ -120,6 +120,44 @@ conflate_and_sum_wt = function(m, w) {
   list(matrix = m[, -nc, drop = FALSE], weight = m[, nc])
 }
 
+# faster version that avoids copying
+conflate_and_sum_wt = function(m, w) {
+  if (!is.matrix(m)) {
+    stop("m must be a matrix.")
+  }
+
+  nr <- nrow(m)
+  if (nr == 1) {
+    return(list(matrix = m, weight = 1))
+  }
+
+  t <- sort_mat(cbind(m, w))
+  nc <- ncol(t)
+  m <- t[, -nc, drop = FALSE]
+  w <- t[, nc]
+  r0 <- 1
+  r <- 1
+  keep <- rep(TRUE, nr)
+  while (r < nr) {
+    r <- r + 1
+
+    if (all(m[r0, ] == m[r, ])) {
+      # Rows r0 and r are identical: compress them
+
+      # Sum the first column of rows r and r+1, put
+      # the total in row r
+      #cat(r0, ' ', r, '\n')
+      w[r0] <- w[r0] + w[r]
+      keep[r] <- FALSE
+
+    } else {
+      # Rows r0 and r are non-identical: progress to next
+      r0 <- r
+
+    }
+  }
+  list(matrix = m[keep, , drop = FALSE], weight = w[keep])
+}
 
 #' Cluster-sort the rows of a matrix
 #' @param m A matrix
