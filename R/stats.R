@@ -82,27 +82,27 @@ add_stats = function(
   p_type  <- substr(evolution$model$pivot_type[1],1,1)
   n_rep   <- evolution$n_rep
   mplat_0 <- evolution$mplat_0
-  stats_df <- NULL
-  
-  ## stats_df assembly function
-  get_stats_df <- function(gen) {
-    # Create dataframe containing one row of stats
-    data.frame(
-      rep = rep_i,
-      generation = gen,
-      n_classes = n_classes,
-      turnover = turnover,
-      size_class1 = size_class1,
-      size_class2 = size_class2,
-      mean_exponents = mean_exponents,
-      mean_cond_H = mean_ignoring_diag(cond_H),
-      mean_U = mean_ignoring_diag(U)
-    )
-  }
   
   ## Cycle through simulation repetitions
   
-  for (rep_i in 1:n_rep){
+  stats_df <- foreach(rep_i=1:n_rep, .combine=bind_rows) %dofuture% {
+    
+    ## stats_df assembly function
+    get_stats_df <- function(gen) {
+      # Create dataframe containing one row of stats
+      data.frame(
+        rep = rep_i,
+        generation = gen,
+        n_classes = n_classes,
+        turnover = turnover,
+        size_class1 = size_class1,
+        size_class2 = size_class2,
+        mean_exponents = mean_exponents,
+        mean_cond_H = mean_ignoring_diag(cond_H),
+        mean_U = mean_ignoring_diag(U)
+      )
+    }
+    rep_stats_df <- NULL
     
     if (p_type == "l") {
       mplat      <- t(mplat_0)
@@ -113,7 +113,8 @@ add_stats = function(
     ## Initialise simulation stats
     turnover <- 0
     cplat <- unique(mplat) # plat of classes
-    if (rep_i == 1) { cplat_prev <- cplat }
+    # if (rep_i == 1) { cplat_prev <- cplat }
+    cplat_prev <- cplat
     n_classes <- nrow(cplat)
     class_sizes <- sort(table(do.call(paste, data.frame(mplat))), decreasing = T)
     size_class1 <- class_sizes[1]
@@ -190,10 +191,11 @@ add_stats = function(
       plat_stats_df$turnover <- union_n - intersection_n 
       cplat_prev <- cplat
       
-      # Append the current stats to stats_df
+      # Append the current stats to rep_stats_df
       plat_stats_df$generation <- steps$gens[i]
-      stats_df <- bind_rows(stats_df, plat_stats_df)
+      rep_stats_df <- bind_rows(rep_stats_df, plat_stats_df)
     }
+    rep_stats_df
   }
   
   # Shift the turnover data back one time step:
