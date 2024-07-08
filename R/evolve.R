@@ -88,21 +88,16 @@ evolve_mplat = function(
   foc_e_sel <- if (is_rotated) foc_morphosite_sel else foc_lex_sel
   foc_b_sel <- if (is_rotated) foc_lex_sel else foc_morphosite_sel
 
-  # Evolution data records
-  mplat_finals <- vector("list", n_rep)
-  changes_df <- data.frame(
-    stringsAsFactors = FALSE,
-    repetition = integer(0), generation = integer(0), 
-    foci_lex = character(0), foci_morphosite = character(0), 
-    a_new = character(0)
-    )
-
   ## Start simulations
   
-  for (rep_i in 1:n_rep) {
+  res <- foreach(rep_i = 1:n_rep, .options.future = list(seed = TRUE)) %dofuture% {
 
-    ## Initialise
-    
+    changes_df <- data.frame(
+      stringsAsFactors = FALSE,
+      repetition = integer(0), generation = integer(0), 
+      foci_lex = character(0), foci_morphosite = character(0), 
+      a_new = character(0)
+    )
     mplat <- if (is_rotated) t(mplat_0) else mplat_0 # mplat, rotated if required
     generation <- 0
     n_gen_stability <- 0
@@ -204,14 +199,16 @@ evolve_mplat = function(
         changes_df[nrow(changes_df), ] %>% 
           mutate(generation = !!generation)
     
-    # Add final mplat to list
-    mplat_finals[[rep_i]] <- if (is_rotated) t(mplat) else mplat
+    list(changes_df, if (is_rotated) t(mplat) else mplat)
   }
-  
+
+  changes_df <- bind_rows(lapply(res, function(t) t[[1]]))
+  mplat_finals <- lapply(res, function(t) t[[2]])
+    
   ## Return results
   list(
     mplat_0 = mplat_0,
-    total_generations = generation,
+    #total_generations = generation,
     param_dict = param_dict,
     n_rep = n_rep,
     model = list(
